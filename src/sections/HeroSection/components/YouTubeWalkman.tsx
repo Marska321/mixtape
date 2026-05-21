@@ -198,7 +198,7 @@ export const YouTubeWalkman = () => {
       data-walkman="true"
       onMouseDown={onStart}
       onTouchStart={onStart}
-      className="absolute w-80 z-[1002] left-[305.15px] top-[142.5px] cursor-grab select-none"
+      className="absolute w-[85vw] max-w-80 z-[1002] max-md:left-0 max-md:right-0 max-md:mx-auto max-md:bottom-8 md:left-[305px] md:top-[142.5px] cursor-grab select-none"
       style={{
         touchAction: "none",
         transform: "rotate(-3.0685619516030718deg)",

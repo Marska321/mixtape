@@ -16,17 +16,16 @@ type SpawnedTrack = Track & { x: number; y: number; rotation: number };
 
 const stop = (e: React.MouseEvent | React.TouchEvent) => e.stopPropagation();
 
-// Mirror reference layout: cassettes piled up centre-right, overlapping naturally
 const getSpawnPos = (index: number) => {
-  // Walkman is at ~left:305px, width 320px → right edge ~625px
-  // Pile cassettes starting around x:430 spreading right
-  const baseX = Math.max(420, window.innerWidth * 0.38);
-  const baseY = 160;
+  const isMobile = typeof window !== "undefined" && window.innerWidth < 768;
+  const baseX = isMobile 
+    ? (window.innerWidth / 2) - 130
+    : Math.max(420, typeof window !== "undefined" ? window.innerWidth * 0.38 : 420);
+  const baseY = isMobile ? 220 : 160;
 
-  // Fan them out in a scattered pile (not a grid)
   const col = index % 3;
   const row = Math.floor(index / 3);
-  const x = baseX + col * 90 + (Math.random() - 0.5) * 30;
+  const x = baseX + col * (isMobile ? 70 : 90) + (Math.random() - 0.5) * 30;
   const y = baseY + row * 55 + (Math.random() - 0.5) * 20;
   const rotation = (Math.random() - 0.5) * 18;
   return { x, y, rotation };
@@ -78,7 +77,7 @@ export const MusicCard = () => {
         ref={ref}
         onMouseDown={onStart}
         onTouchStart={onStart}
-        className="fixed box-border caret-transparent outline-[3px] w-80 z-[200] right-10 top-10 cursor-grab select-none"
+        className="fixed box-border caret-transparent outline-[3px] w-[90vw] max-w-80 z-[200] max-md:left-0 max-md:right-0 max-md:mx-auto max-md:top-4 md:right-10 md:top-10 cursor-grab select-none"
         style={{ touchAction: "none" }}
       >
         <div className="relative aspect-[1.6_/_1] box-border caret-transparent outline-[3px] w-full">
@@ -123,11 +122,6 @@ export const MusicCard = () => {
             )}
           </div>
 
-          <ActionBadge
-            containerVariant="rotate-[-1.999999842926156deg] right-[150px]"
-            labelVariant="text-[10px] bg-green-500 leading-[15px] px-2"
-            text="Link  SPOTIFY"
-          />
           <ActionBadge
             containerVariant="rotate-[3.0000011085596214deg] right-[30px]"
             labelVariant="text-xs bg-rose-500 leading-4 px-3"

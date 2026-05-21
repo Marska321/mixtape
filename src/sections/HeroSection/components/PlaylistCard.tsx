@@ -7,12 +7,15 @@ import { type Track } from "@/context/MusicContext";
 type SpawnedTrack = Track & { x: number; y: number; rotation: number; id: string };
 
 const getSpawnPos = (index: number) => {
-  const baseX = Math.max(420, typeof window !== "undefined" ? window.innerWidth * 0.38 : 420);
-  const baseY = 160;
+  const isMobile = typeof window !== "undefined" && window.innerWidth < 768;
+  const baseX = isMobile 
+    ? (window.innerWidth / 2) - 130
+    : Math.max(420, typeof window !== "undefined" ? window.innerWidth * 0.38 : 420);
+  const baseY = isMobile ? 220 : 160;
 
   const col = index % 3;
   const row = Math.floor(index / 3);
-  const x = baseX + col * 90 + (Math.random() - 0.5) * 30;
+  const x = baseX + col * (isMobile ? 70 : 90) + (Math.random() - 0.5) * 30;
   const y = baseY + row * 55 + (Math.random() - 0.5) * 20;
   const rotation = (Math.random() - 0.5) * 18;
   return { x, y, rotation };
@@ -44,7 +47,7 @@ export const PlaylistCard = ({ playlist }: { playlist: PlaylistConfig }) => {
         ref={ref}
         onMouseDown={onStart}
         onTouchStart={onStart}
-        className="fixed box-border caret-transparent outline-[3px] w-80 z-[200] right-10 top-10 cursor-grab select-none"
+        className="fixed box-border caret-transparent outline-[3px] w-[90vw] max-w-80 z-[200] max-md:left-0 max-md:right-0 max-md:mx-auto max-md:top-4 md:right-10 md:top-10 cursor-grab select-none"
         style={{ touchAction: "none" }}
       >
         <div className="relative aspect-[1.6_/_1] box-border caret-transparent outline-[3px] w-full">
